@@ -15,6 +15,12 @@ import matplotlib.pyplot as plt
 #import statsmodel for Kolmogorov-Smirnov test to determine if the samples came from the same distribution
 from scipy.stats import ks_2samp, kurtosis, skew
 
+
+
+global pThinSectionData
+global mLabels
+
+
 #set the figure resolution much higher:
 plt.rcParams['figure.dpi'] = 300
 plt.rcParams['savefig.dpi'] = 500
@@ -47,7 +53,6 @@ ax.set_zlabel('Principal Component 3', fontsize = 15)
 ax.set_title('3 Component PCA', fontsize = 20)
 #tPCA = pca.components_
 
-
 ## TODO 
 ax.scatter(pThinSectionData[:,0],pThinSectionData[:,1],pThinSectionData[:,2], c=mLabels['Color'], marker="o")
 #ax.scatter(pThinSectionData[0:8,0],pThinSectionData[0:8,1],pThinSectionData[0:8,2], c="blue", marker="o") # plot the point (2,3,4) on the figure
@@ -56,3 +61,18 @@ plt.show()
 
 
 
+
+#Set the figure resolution much higher:
+plt.rcParams['figure.dpi'] = 150
+plt.rcParams['savefig.dpi'] = 500
+
+fig = plt.figure(figsize = (25,8))
+ax = fig.add_subplot(1,1,1)
+#ax.legend(labels=mLabels['Index'])
+ax.set_xlabel('Distance', fontsize = 15)
+ax.set_ylabel('Principal Component 1', fontsize = 15)
+ax.set_title('PCA1 for Transect', fontsize = 20)
+
+#Plot PCA
+ax.scatter(mLabels['x-coord'],pThinSectionData[:,0], c=mLabels['Color'], marker="o") 
+plt.show()
