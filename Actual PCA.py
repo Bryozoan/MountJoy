@@ -18,13 +18,20 @@ plt.rcParams['figure.dpi'] = 300
 plt.rcParams['savefig.dpi'] = 500
 
 #import thinsection data from excel 
-dFthinSectionData = pd.read_excel(r'C:\Users\therobe7\OneDrive\SRC_and_Research\MountJoy\TestCorrect Timpoweap Data sheet.xlsx',\
+#dFthinSectionData = pd.read_excel(r'C:\Users\therobe7\OneDrive\SRC_and_Research\MountJoy\TestCorrect Timpoweap Data sheet.xlsx',\
+#                                  sheet_name = 'AllData');
+dFthinSectionData = pd.read_excel(r'C:\Users\duckm\OneDrive\SRC_and_Research\MountJoy\TestCorrect Timpoweap Data sheet.xlsx',\
                                   sheet_name = 'AllData');
+#point where to look
 dFthinSectionData.set_index('Sample', inplace=True);
 
-mLabels = pd.read_excel(r'C:\Users\therobe7\OneDrive\SRC_and_Research\MountJoy\TestCorrect Timpoweap Data sheet.xlsx',\
+#mLabels = pd.read_excel(r'C:\Users\therobe7\OneDrive\SRC_and_Research\MountJoy\TestCorrect Timpoweap Data sheet.xlsx',\
+#                                  sheet_name = 'Labels')
+mLabels = pd.read_excel(r'C:\Users\duckm\OneDrive\SRC_and_Research\MountJoy\TestCorrect Timpoweap Data sheet.xlsx',\
                                   sheet_name = 'Labels')
-    
+
+
+   
 #print(dFthinSectionData)
 
 #Normalize the data
@@ -77,8 +84,7 @@ def depthLog(df, indicator, location, depth):
         listEl.append(dfNew[indicator].where(dfNew[location].eq(locID[i])))
         listDep.append(dfNew[depth].where(dfNew[location].eq(locID[i])))
     
-        fig, ax = plt.plot(listEl[i], listDep[i], c=sym['col'].iloc[i], 
-                   label=(locID[i]))
+        fig, ax = plt.plot(listEl[i], listDep[i])
         plt.xlabel(indicator) 
         plt.ylabel('Depth ')
         plt.title(indicator + ' at outcrop %f' % locID[i])

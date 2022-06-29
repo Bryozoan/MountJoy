@@ -20,11 +20,11 @@ plt.rcParams['figure.dpi'] = 300
 plt.rcParams['savefig.dpi'] = 500
 
 #import thinsection data from excel 
-dFthinSectionData = pd.read_excel(r'C:\Users\therobe7\OneDrive\SRC_and_Research\MountJoy\TestCorrect Timpoweap Data sheet.xlsx',\
+dFthinSectionData = pd.read_excel(r'C:\Users\duckm\OneDrive\SRC_and_Research\MountJoy\TestCorrect Timpoweap Data sheet.xlsx',\
                                   sheet_name = 'AllData')
 dFthinSectionData.set_index('Sample', inplace=True);
 
-mLabels = pd.read_excel(r'C:\Users\therobe7\OneDrive\SRC_and_Research\MountJoy\TestCorrect Timpoweap Data sheet.xlsx',\
+mLabels = pd.read_excel(r'C:\Users\duckm\OneDrive\SRC_and_Research\MountJoy\TestCorrect Timpoweap Data sheet.xlsx',\
                                   sheet_name = 'Labels')
     
 #print(dFthinSectionData)
