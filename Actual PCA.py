@@ -18,17 +18,18 @@ plt.rcParams['figure.dpi'] = 300
 plt.rcParams['savefig.dpi'] = 500
 
 #import thinsection data from excel 
-#dFthinSectionData = pd.read_excel(r'C:\Users\therobe7\OneDrive\SRC_and_Research\MountJoy\TestCorrect Timpoweap Data sheet.xlsx',\
-#                                  sheet_name = 'AllData');
-dFthinSectionData = pd.read_excel(r'C:\Users\duckm\OneDrive\SRC_and_Research\MountJoy\TestCorrect Timpoweap Data sheet.xlsx',\
+dFthinSectionData = pd.read_excel(r'C:\Users\therobe7\OneDrive\SRC_and_Research\MountJoy\TimpoweapDataSheet_v3.xlsx',\
                                   sheet_name = 'AllData');
+#dFthinSectionData = pd.read_excel(r'C:\Users\duckm\OneDrive\SRC_and_Research\MountJoy\TimpoweapDataSheet_v3.xlsx',\
+#                                  sheet_name = 'AllData');
+
 #point where to look
 dFthinSectionData.set_index('Sample', inplace=True);
 
-#mLabels = pd.read_excel(r'C:\Users\therobe7\OneDrive\SRC_and_Research\MountJoy\TestCorrect Timpoweap Data sheet.xlsx',\
-#                                  sheet_name = 'Labels')
-mLabels = pd.read_excel(r'C:\Users\duckm\OneDrive\SRC_and_Research\MountJoy\TestCorrect Timpoweap Data sheet.xlsx',\
+mLabels = pd.read_excel(r'C:\Users\therobe7\OneDrive\SRC_and_Research\MountJoy\TimpoweapDataSheet_v3.xlsx',\
                                   sheet_name = 'Labels')
+#mLabels = pd.read_excel(r'C:\Users\duckm\OneDrive\SRC_and_Research\MountJoy\TimpoweapDataSheet_v3.xlsx',\
+#                                  sheet_name = 'Labels')
 
 
    
@@ -55,7 +56,7 @@ vVar = pca.explained_variance_ratio_
 print('Varience accounted by main principal componentes', vVar)
 
 #Plot the 2 PCA
-ax.scatter(pThinSectionData[:,0],pThinSectionData[:,1], c=mLabels['Color'], marker="o") 
+ax.scatter(pThinSectionData[:,0],pThinSectionData[:,1], c=mLabels['MorphColorV2'], marker="o") 
 
 plt.show()
 
