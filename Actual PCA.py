@@ -32,19 +32,44 @@ mLabels = pd.read_excel(r'C:\Users\therobe7\OneDrive\SRC_and_Research\MountJoy\T
 #                                  sheet_name = 'Labels')
 
 
-   
-#print(dFthinSectionData)
+#set up diferent symbols when making chart
+data = {'marker':["o","s","D"]}
+sym = pd.DataFrame(data)
 
 #Normalize the data
 #scalerData = StandardScaler(dFthinSectionData);
+dfNorm = dFthinSectionData.loc[:,"Irregular fenestra":"Seafloor micrite"].divide(dFthinSectionData["Correction factor"], axis="index")
+dFthinSectionData = dFthinSectionData.drop(['Sum','Correction factor'], axis=1)
 
-#Run the PCA
+
+#Run the PCA on raw data
 pca = PCA(.70)
 pca.fit(dFthinSectionData)
 pThinSectionData = pca.transform(dFthinSectionData)
 print(pca.n_components_)
 
+#Run the PCA on normalized data
+pcaNorm = PCA(.70)
+pcaNorm.fit(dfNorm)
+pThinSectionDataNorm = pca.transform(dfNorm)
+print(pca.n_components_)
 
+
+##remove data that we don't know where it is from
+#raw Data
+pTSD = pd.DataFrame(pThinSectionData, columns = ['PCA1','PCA2','PCA3','PCA4'])
+pTSD = pTSD.join(mLabels['MorphologyV3'])
+pTSD = pTSD.dropna(subset = ['MorphologyV3'])
+pTSD = pTSD.drop(columns = ['MorphologyV3'])
+#normalized data
+pTSDN = pd.DataFrame(pThinSectionDataNorm, columns = ['PCA1','PCA2','PCA3','PCA4'])
+pTSDN = pTSDN.join(mLabels['MorphologyV3'])
+pTSDN = pTSDN.dropna(subset = ['MorphologyV3'])
+pTSDN = pTSDN.drop(columns = ['MorphologyV3'])
+#drop labels we dont have
+mLabels = mLabels.dropna(subset = ['MorphologyV3'])
+
+#Plot raw data
 fig = plt.figure(figsize = (8,8))
 ax = fig.add_subplot(1,1,1)
 ax.legend(labels=mLabels['Index'])
@@ -56,7 +81,24 @@ vVar = pca.explained_variance_ratio_
 print('Varience accounted by main principal componentes', vVar)
 
 #Plot the 2 PCA
-ax.scatter(pThinSectionData[:,0],pThinSectionData[:,1], c=mLabels['MorphColorV2'], marker="o") 
+ax.scatter(pTSD['PCA1'],pTSD['PCA2'], c=mLabels['MorphColorV3'], marker="o") 
+
+plt.show()
+
+
+#Plot normalized data
+fig = plt.figure(figsize = (8,8))
+ax = fig.add_subplot(1,1,1)
+ax.legend(labels=mLabels['Index'])
+ax.set_xlabel('Principal Component 2', fontsize = 15)
+ax.set_ylabel('Principal Component 3', fontsize = 15)
+ax.set_title('Normalized 2 Component PCA', fontsize = 20)
+tPCA = pca.components_
+vVar = pca.explained_variance_ratio_
+print('Varience accounted by main principal componentes', vVar)
+
+#Plot the 2 PCA
+ax.scatter(pTSDN['PCA2'],pTSDN['PCA3'], c=mLabels['MorphColorV3'], marker="o") 
 
 plt.show()
 
