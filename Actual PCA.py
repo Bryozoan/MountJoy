@@ -12,24 +12,25 @@ from sklearn.decomposition import PCA
 #import plotly to plot PCA
 #import matplotlib to plot histograms
 import matplotlib.pyplot as plt
+from GeochemPlots import hist
 
 #set the figure resolution much higher:
 plt.rcParams['figure.dpi'] = 300
 plt.rcParams['savefig.dpi'] = 500
 
 #import thinsection data from excel 
-dFthinSectionData = pd.read_excel(r'C:\Users\therobe7\OneDrive\SRC_and_Research\MountJoy\TimpoweapDataSheet_v3.xlsx',\
-                                  sheet_name = 'AllData');
-#dFthinSectionData = pd.read_excel(r'C:\Users\duckm\OneDrive\SRC_and_Research\MountJoy\TimpoweapDataSheet_v3.xlsx',\
+#dFthinSectionData = pd.read_excel(r'C:\Users\therobe7\OneDrive\SRC_and_Research\MountJoy\TimpoweapDataSheet_v3.xlsx',\
 #                                  sheet_name = 'AllData');
+dFthinSectionData = pd.read_excel(r'C:\Users\duckm\OneDrive\SRC_and_Research\MountJoy\TimpoweapDataSheet_v3.5.xlsx',\
+                                  sheet_name = 'AllData');
 
 #point where to look
 dFthinSectionData.set_index('Sample', inplace=True);
 
-mLabels = pd.read_excel(r'C:\Users\therobe7\OneDrive\SRC_and_Research\MountJoy\TimpoweapDataSheet_v3.xlsx',\
-                                  sheet_name = 'Labels')
-#mLabels = pd.read_excel(r'C:\Users\duckm\OneDrive\SRC_and_Research\MountJoy\TimpoweapDataSheet_v3.xlsx',\
+#mLabels = pd.read_excel(r'C:\Users\therobe7\OneDrive\SRC_and_Research\MountJoy\TimpoweapDataSheet_v3.xlsx',\
 #                                  sheet_name = 'Labels')
+mLabels = pd.read_excel(r'C:\Users\duckm\OneDrive\SRC_and_Research\MountJoy\TimpoweapDataSheet_v3.5.xlsx',\
+                                  sheet_name = 'Labels')
 
 
 #set up diferent symbols when making chart
@@ -39,7 +40,10 @@ sym = pd.DataFrame(data)
 #Normalize the data
 #scalerData = StandardScaler(dFthinSectionData);
 dfNorm = dFthinSectionData.loc[:,"Irregular fenestra":"Seafloor micrite"].divide(dFthinSectionData["Correction factor"], axis="index")
-dFthinSectionData = dFthinSectionData.drop(['Sum','Correction factor'], axis=1)
+#dfNorm = dFthinSectionData.loc[:,"Fenestra":"cements/encrustations"].divide(dFthinSectionData["Correction factor"], axis="index")
+#dFthinSectionData = dFthinSectionData.drop(['Sum','Correction factor'], axis=1)
+dFthinSectionData = dFthinSectionData.loc[:,"Irregular fenestra":"Seafloor micrite"]
+#dFthinSectionData = dFthinSectionData.loc[:,"Fenestra":"cements/encrustations"]
 
 
 #Run the PCA on raw data
@@ -58,16 +62,18 @@ print(pca.n_components_)
 ##remove data that we don't know where it is from
 #raw Data
 pTSD = pd.DataFrame(pThinSectionData, columns = ['PCA1','PCA2','PCA3','PCA4'])
-pTSD = pTSD.join(mLabels['MorphologyV3'])
-pTSD = pTSD.dropna(subset = ['MorphologyV3'])
-pTSD = pTSD.drop(columns = ['MorphologyV3'])
+#pTSD = pd.DataFrame(pThinSectionData, columns = ['PCA1','PCA2', 'PCA3'])
+pTSD = pTSD.join(mLabels['MorphologyV4'])
+pTSD = pTSD.dropna(subset = ['MorphologyV4'])
+pTSD = pTSD.drop(columns = ['MorphologyV4'])
 #normalized data
 pTSDN = pd.DataFrame(pThinSectionDataNorm, columns = ['PCA1','PCA2','PCA3','PCA4'])
-pTSDN = pTSDN.join(mLabels['MorphologyV3'])
-pTSDN = pTSDN.dropna(subset = ['MorphologyV3'])
-pTSDN = pTSDN.drop(columns = ['MorphologyV3'])
+#pTSDN = pd.DataFrame(pThinSectionDataNorm, columns = ['PCA1','PCA2', 'PCA3'])
+pTSDN = pTSDN.join(mLabels['MorphologyV4'])
+pTSDN = pTSDN.dropna(subset = ['MorphologyV4'])
+pTSDN = pTSDN.drop(columns = ['MorphologyV4'])
 #drop labels we dont have
-mLabels = mLabels.dropna(subset = ['MorphologyV3'])
+mLabels = mLabels.dropna(subset = ['MorphologyV4'])
 
 #Plot raw data
 fig = plt.figure(figsize = (8,8))
@@ -81,7 +87,7 @@ vVar = pca.explained_variance_ratio_
 print('Varience accounted by main principal componentes', vVar)
 
 #Plot the 2 PCA
-ax.scatter(pTSD['PCA1'],pTSD['PCA2'], c=mLabels['MorphColorV3'], marker="o") 
+ax.scatter(pTSD['PCA1'],pTSD['PCA2'], c=mLabels['MorphColorV4'], marker="o") 
 
 plt.show()
 
@@ -89,18 +95,27 @@ plt.show()
 #Plot normalized data
 fig = plt.figure(figsize = (8,8))
 ax = fig.add_subplot(1,1,1)
-ax.legend(labels=mLabels['Index'])
-ax.set_xlabel('Principal Component 2', fontsize = 15)
-ax.set_ylabel('Principal Component 3', fontsize = 15)
+#ax.legend(labels=pcaNorm())
+ax.set_xlabel('Principal Component 1', fontsize = 15)
+ax.set_ylabel('Principal Component 2', fontsize = 15)
 ax.set_title('Normalized 2 Component PCA', fontsize = 20)
 tPCA = pca.components_
 vVar = pca.explained_variance_ratio_
 print('Varience accounted by main principal componentes', vVar)
 
 #Plot the 2 PCA
-ax.scatter(pTSDN['PCA2'],pTSDN['PCA3'], c=mLabels['MorphColorV3'], marker="o") 
+ax.scatter(pTSDN['PCA1'],pTSDN['PCA2'], c=mLabels['MorphColorV4'], marker="o") 
 
 plt.show()
+
+
+dfHist = pd.concat([pTSDN, mLabels.reindex(pTSDN.index)], axis=1)
+
+hist(dfHist,'PCA1','MorphologyV4','PCA1','labels')
+hist(dfHist,'PCA2','MorphologyV4','PCA1','labels')
+hist(dfHist,'PCA3','MorphologyV4','PCA1','labels')
+hist(dfHist,'PCA4','MorphologyV4','PCA1','labels')
+
 
 
 def depthLog(df, indicator, location, depth):
@@ -141,4 +156,4 @@ df['Vertical Sort Order'] = mLabels['Vertical Sort Order']
 df['Vertical Index'] = mLabels['Vertical Index']
 
 
-depthLog(df, 'PCA 1', 'Vertical Index', 'Vertical Sort Order')
+#depthLog(df, 'PCA 1', 'Vertical Index', 'Vertical Sort Order')
