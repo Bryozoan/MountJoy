@@ -63,17 +63,17 @@ print(pca.n_components_)
 #raw Data
 pTSD = pd.DataFrame(pThinSectionData, columns = ['PCA1','PCA2','PCA3','PCA4'])
 #pTSD = pd.DataFrame(pThinSectionData, columns = ['PCA1','PCA2', 'PCA3'])
-pTSD = pTSD.join(mLabels['MorphologyV4'])
-pTSD = pTSD.dropna(subset = ['MorphologyV4'])
-pTSD = pTSD.drop(columns = ['MorphologyV4'])
+pTSD = pTSD.join(mLabels['MorphologyV3'])
+pTSD = pTSD.dropna(subset = ['MorphologyV3'])
+pTSD = pTSD.drop(columns = ['MorphologyV3'])
 #normalized data
 pTSDN = pd.DataFrame(pThinSectionDataNorm, columns = ['PCA1','PCA2','PCA3','PCA4'])
 #pTSDN = pd.DataFrame(pThinSectionDataNorm, columns = ['PCA1','PCA2', 'PCA3'])
-pTSDN = pTSDN.join(mLabels['MorphologyV4'])
-pTSDN = pTSDN.dropna(subset = ['MorphologyV4'])
-pTSDN = pTSDN.drop(columns = ['MorphologyV4'])
+pTSDN = pTSDN.join(mLabels['MorphologyV3'])
+pTSDN = pTSDN.dropna(subset = ['MorphologyV3'])
+pTSDN = pTSDN.drop(columns = ['MorphologyV3'])
 #drop labels we dont have
-mLabels = mLabels.dropna(subset = ['MorphologyV4'])
+mLabels = mLabels.dropna(subset = ['MorphologyV3'])
 
 #Plot raw data
 fig = plt.figure(figsize = (8,8))
@@ -87,7 +87,7 @@ vVar = pca.explained_variance_ratio_
 print('Varience accounted by main principal componentes', vVar)
 
 #Plot the 2 PCA
-ax.scatter(pTSD['PCA1'],pTSD['PCA2'], c=mLabels['MorphColorV4'], marker="o") 
+ax.scatter(pTSD['PCA1'],pTSD['PCA2'], c=mLabels['MorphColorV3'], marker="o") 
 
 plt.show()
 
@@ -104,17 +104,17 @@ vVar = pca.explained_variance_ratio_
 print('Varience accounted by main principal componentes', vVar)
 
 #Plot the 2 PCA
-ax.scatter(pTSDN['PCA1'],pTSDN['PCA2'], c=mLabels['MorphColorV4'], marker="o") 
+ax.scatter(pTSDN['PCA1'],pTSDN['PCA2'], c=mLabels['MorphColorV3'], marker="o") 
 
 plt.show()
 
 
 dfHist = pd.concat([pTSDN, mLabels.reindex(pTSDN.index)], axis=1)
 
-hist(dfHist,'PCA1','MorphologyV4','PCA1','labels')
-hist(dfHist,'PCA2','MorphologyV4','PCA1','labels')
-hist(dfHist,'PCA3','MorphologyV4','PCA1','labels')
-hist(dfHist,'PCA4','MorphologyV4','PCA1','labels')
+hist(dfHist,'PCA1','MorphologyV3','PCA1','labels')
+hist(dfHist,'PCA2','MorphologyV3','PCA1','labels')
+hist(dfHist,'PCA3','MorphologyV3','PCA1','labels')
+hist(dfHist,'PCA4','MorphologyV3','PCA1','labels')
 
 
 
